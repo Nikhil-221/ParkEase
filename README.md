@@ -1,4 +1,4 @@
-#25AACR15
+
 # ParkEase 
 
 ---
@@ -159,10 +159,9 @@ http://127.0.0.1:5000/
 - Senior Mentor - Revanth  
 - Junior Mentor - Zubair  
 - Team Member 1 - Manasvini
-- Team Member 2 - Nikhil 
+- Team Member 2 - Nikhileswar
 - Team Member 3 - Rithisha  
 - Team Member 4 - Pranav  
-- Team Member 5 - Gowrish  
 
 ## Payment Gateway Integration
 
