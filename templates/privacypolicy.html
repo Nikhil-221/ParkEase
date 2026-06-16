@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ParkEase - Terms and Conditions</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #000000;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+   header {
+      background-color: #000;
+      padding: 30px 50px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 15px;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 50px; 
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0px 20px;
+    }
+
+    .nav-right a.active {
+      color: #ffea00;
+    }
+    
+    .content-wrapper {
+      flex-grow: 1;
+      padding: 20px 40px;
+    }
+
+    .scroll-container {
+      background-color: #000;
+      padding: 30px;
+      border-radius: 10px;
+      max-height: 70vh;
+      overflow-y:auto;
+      box-shadow: 0 0 10px #ffffff;
+    }
+
+    h1 {
+      color: #ffea00;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    h3 {
+      color: #ffea00;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    ul {
+      margin-left: 20px;
+      margin-top: 10px;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 50px;
+      font-size: 15px;
+      background-color: #000;
+      flex-wrap: wrap;
+      font-weight: bold;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+    }
+
+    footer a span {
+      color: #ffea00;
+    }
+
+    footer div:last-child {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  
+  <header>
+    <nav class="navbar">
+      <div class="nav-right">
+        <a href="{{ url_for('home') }}">Home</a>
+<a href="{{ url_for('aboutus') }}">About us</a>
+<a href="{{ url_for('contact') }}">Contact</a>
+<a href="{{ url_for('login') }}">Log In</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="content-wrapper">
+    <div class="scroll-container">
+      
+    <h1>Privacy Policy</h1>
+
+    <p>
+      At <strong>ParkEase</strong>, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform.
+    </p>
+
+    <h3>1. Information We Collect</h3>
+    <p>
+      We may collect personal data such as your name, email address, phone number, payment information, and vehicle details when you register or interact with our services.
+    </p>
+
+    <h3>2. How We Use Your Information</h3>
+    <p>
+      We use your information to provide, operate, and improve our services, process transactions, send notifications, and personalize your experience on ParkEase.
+    </p>
+
+    <h3>3. Sharing of Information</h3>
+    <p>
+      We do not sell or share your personal data with third parties, except as necessary to operate our services (e.g., payment processors) or comply with legal obligations.
+    </p>
+
+    <h3>4. Data Security</h3>
+    <p>
+      We implement appropriate technical and organizational security measures to protect your data against unauthorized access or disclosure.
+    </p>
+
+    <h3>5. Your Rights</h3>
+    <p>
+      You have the right to access, update, or delete your personal information. You may also withdraw consent or opt out of communications at any time.
+    </p>
+
+    <h3>6. Changes to This Policy</h3>
+    <p>
+      We may update this policy periodically. We will notify you of significant changes via email or through our platform.
+    </p>
+  </div>
+  </div>
+
+  <footer>
+    <div>
+      © <a href="#">Park<span class="highlight">Ease.</span></a>
+    </div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+<a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+
+</body>
+</html>

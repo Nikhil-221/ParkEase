@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Previously Booked Spots - ParkEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: black;
+      padding: 30px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      font-size: 15px;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-right a.active {
+      color: #ffea00;
+    }
+
+    .profile {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile i {
+      font-size: 1.5rem;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background-color: #fff;
+      color: #000;
+      border-radius: 8px;
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 180px;
+      font-weight: 600;
+      z-index: 100;
+    }
+
+    .dropdown a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .dropdown a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px 50px 30px;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    .bookings {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .booking-card {
+      background-color: #ffffff;
+      color: #000000;
+      border-radius: 15px;
+      padding: 15px;
+      width: 260px;
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .booking-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .booking-card p {
+      margin: 8px 0;
+    }
+
+    .booking-card button {
+      background-color: #ffea00;
+      color: black;
+      font-weight: bold;
+      border: none;
+      padding: 8px 16px;
+      margin-top: 10px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 50px;
+      background-color: #000;
+      font-weight: bold;
+      flex-wrap: wrap;
+      font-size: 15px;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+    }
+
+    footer a span {
+      color: #ffea00;
+    }
+
+    footer div:last-child {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .logo a {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: #ffea00;
+    }
+
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .popup {
+      background: #fff;
+      color: #000;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    }
+
+    .popup img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .popup h3 {
+      margin-top: 0;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    .stars {
+      display: flex;
+      gap: 5px;
+      font-size: 20px;
+      cursor: pointer;
+      color: gray;
+    }
+
+    .stars i.selected {
+      color: #ffc107;
+    }
+
+    textarea {
+      width: 100%;
+      resize: none;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      padding: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .submit-review {
+      background-color: #ffea00;
+      color: black;
+      font-weight: bold;
+      border: none;
+      padding: 8px 16px;
+      margin-top: 10px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <a href="{{ url_for('userdashboard') }}">User <span>Dashboard</span></a>
+  </div>
+  <div class="nav-right">
+    <a href="{{ url_for('pbs') }}">Previously Booked Spots</a>
+    <a href="{{ url_for('usercontact') }}">Contact</a>
+    <div class="profile" onclick="toggleDropdown()">
+      <i class="fas fa-user-circle"></i>
+      <div class="dropdown" id="dropdownMenu">
+        <a href="{{ url_for('useraccount') }}">Your Account</a>
+        <a href="{{ url_for('logout') }}">Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h2>Previously Booked Spots</h2>
+  <div class="bookings">
+    {% for booking in bookings %}
+      {% if not booking.reviewed %}
+      <div class="booking-card"
+           data-booking-id="{{ booking.id }}"
+           data-location="{{ booking.spot.location }}"
+           data-vehicle="{{ booking.spot.description }}"
+           data-price="{{ booking.spot.price }}"
+           data-slot="{{ booking.spot.slot }}"
+           data-image="{{ booking.spot.image_url }}"
+           data-lender="{{ booking.spot.lender.fullname }}"
+           data-contact="{{ booking.spot.lender.phone }}">
+        <p><strong>Address:</strong><br> {{ booking.spot.location }}</p>
+        <p><strong>Vehicle:</strong> {{ booking.spot.description }}</p>
+        <p><strong>Cost:</strong> ₹{{ booking.spot.price }}</p>
+        <button onclick="openDetails(this)">Learn More</button>
+      </div>
+      {% endif %}
+    {% else %}
+      <p>No bookings yet.</p>
+    {% endfor %}
+  </div>
+</main>
+
+<div id="detailsPopup" class="popup-overlay">
+  <div class="popup">
+    <button class="close-btn" onclick="closePopup('detailsPopup')">×</button>
+    <img id="popupImage" src="" alt="Spot Image">
+    <h3 id="popupLocation"></h3>
+    <p><strong>Vehicle:</strong> <span id="popupVehicle"></span></p>
+    <p><strong>Cost:</strong> ₹<span id="popupCost"></span></p>
+    <p><strong>Slot:</strong> <span id="popupSlot"></span></p>
+    <p><strong>Lender:</strong> <span id="popupLender"></span></p>
+    <p><strong>Contact:</strong> <span id="popupContact"></span></p>
+    <button class="submit-review" onclick="openPopup('reviewPopup')">Rate & Review</button>
+  </div>
+</div>
+
+<div id="reviewPopup" class="popup-overlay">
+  <div class="popup">
+    <button class="close-btn" onclick="closePopup('reviewPopup')">×</button>
+    <h3>Rate this Spot</h3>
+    <div class="stars" id="reviewStars">
+      <i class="fas fa-star" data-index="1"></i>
+      <i class="fas fa-star" data-index="2"></i>
+      <i class="fas fa-star" data-index="3"></i>
+      <i class="fas fa-star" data-index="4"></i>
+      <i class="fas fa-star" data-index="5"></i>
+    </div>
+    <textarea id="reviewText" rows="3" placeholder="Leave your review..."></textarea>
+    <button class="submit-review" onclick="submitReview()">Submit</button>
+  </div>
+</div>
+
+<footer>
+  <div>© <a href="#">Park<span>Ease.</span></a></div>
+  <div>
+    <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+    <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+  </div>
+</footer>
+
+<script>
+  let currentCard = null;
+
+  function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownMenu");
+    dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+  }
+
+  document.addEventListener("click", function (e) {
+    const profile = document.querySelector(".profile");
+    const dropdown = document.getElementById("dropdownMenu");
+    if (!profile.contains(e.target)) dropdown.style.display = "none";
+  });
+
+  function openDetails(button) {
+    const card = button.parentElement;
+    currentCard = card;
+    document.getElementById("popupImage").src = card.dataset.image;
+    document.getElementById("popupLocation").textContent = card.dataset.location;
+    document.getElementById("popupVehicle").textContent = card.dataset.vehicle;
+    document.getElementById("popupCost").textContent = card.dataset.price;
+    document.getElementById("popupSlot").textContent = card.dataset.slot;
+    document.getElementById("popupLender").textContent = card.dataset.lender;
+    document.getElementById("popupContact").textContent = card.dataset.contact;
+    document.getElementById("detailsPopup").style.display = "flex";
+  }
+
+  function openPopup(id) {
+    closePopup('detailsPopup');
+    document.getElementById(id).style.display = "flex";
+  }
+
+  function closePopup(id) {
+    document.getElementById(id).style.display = "none";
+  }
+
+  document.querySelectorAll("#reviewStars i").forEach(star => {
+    star.addEventListener("click", function() {
+      const index = parseInt(this.dataset.index);
+      document.querySelectorAll("#reviewStars i").forEach((s, i) => {
+        s.classList.toggle("selected", i < index);
+      });
+    });
+  });
+
+  async function submitReview() {
+    const reviewText = document.getElementById("reviewText").value.trim();
+    const stars = document.querySelectorAll("#reviewStars i.selected").length;
+
+    if (!stars || !reviewText) {
+      alert("Please select stars and write a review.");
+      return;
+    }
+
+    const bookingId = currentCard.dataset.bookingId;
+
+    try {
+      const response = await fetch("/submit_review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ booking_id: bookingId, rating: stars, review: reviewText })
+      });
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        alert("Thank you for your review! This spot is now available for others.");
+
+        currentCard.remove();
+        currentCard = null;
+
+        if (document.querySelectorAll('.booking-card').length === 0) {
+          document.querySelector('.bookings').innerHTML = "<p>No bookings yet.</p>";
+        }
+
+        closePopup('reviewPopup');
+      } else {
+        alert("Error: " + data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong. Please try again.");
+    }
+  }
+</script>
+</body>
+</html>

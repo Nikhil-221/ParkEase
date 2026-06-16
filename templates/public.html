@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book a Public Spot - ParkEase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #000;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 50px;
+      background-color: #000;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .logo a {
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo a span {
+      color: #ffea00;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      font-size: 15px;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .profile {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile i {
+      font-size: 1.5rem;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background-color: #ffffff;
+      color: #000000;
+      border-radius: 5px;
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 200px;
+      font-weight: 600;
+      z-index: 100;
+    }
+
+    .dropdown a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .dropdown a:hover {
+      text-decoration: underline;
+    }
+
+    #map {
+      flex: 1;
+      height: calc(100vh - 160px);
+      width: 100%;
+      border-top: 2px solid #ffea00;
+      border-bottom: 2px solid #ffea00;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 40px;
+      font-size: 0.8rem;
+      background-color: #000;
+      font-weight: bold;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+    }
+
+    footer .highlight {
+      color: #ffea00;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="{{ url_for('userdashboard') }}">User <span>Dashboard</span></a>
+    </div>
+    <div class="nav-right">
+      <a href="{{ url_for('pbs') }}">Previously booked spots</a>
+      <a href="{{ url_for('usercontact') }}">Contact</a>
+      <div class="profile" onclick="toggleDropdown()">
+        <i class="fas fa-user-circle"></i>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="{{ url_for('useraccount') }}">Your Account</a>
+          <a href="{{ url_for('logout') }}">Log out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="map"></div>
+
+  <footer>
+    <div>© <span class="highlight">ParkEase.</span></div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownMenu");
+    dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+  }
+
+  document.addEventListener("click", function (event) {
+    const profile = document.querySelector(".profile");
+    const dropdown = document.getElementById("dropdownMenu");
+    if (!profile.contains(event.target)) {
+      dropdown.style.display = "none";
+    }
+  });
+
+  let map;
+
+  function initMap() {
+    const defaultLocation = { lat: 17.385044, lng: 78.486671 }; // Hyderabad
+
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: defaultLocation,
+      zoom: 13,
+      styles: [
+        { elementType: "geometry", stylers: [{ color: "#1d1d1d" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#ffffff" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#000000" }] }
+      ]
+    });
+
+    const service = new google.maps.places.PlacesService(map);
+
+    // Regular parking spots (Yellow markers)
+    const searchQueries = [
+      { keyword: "parking" },
+      { keyword: "mall" },
+      { keyword: "shopping center" },
+      { keyword: "office building" },
+      { keyword: "public parking" }
+    ];
+
+    // EV charging points (Green markers)
+    const evQueries = [
+      { keyword: "EV parking" },
+      { keyword: "EV charger" },
+      { keyword: "EV car charger" },
+      { keyword: "electric vehicle charging" },
+      { keyword: "bike charging" },
+      { keyword: "EV charging station" },
+      
+      { keyword: "fast charger" }
+    ];
+
+    // Yellow pointers for regular spots
+    searchQueries.forEach(q => {
+      service.nearbySearch(
+        {
+          location: defaultLocation,
+          radius: 7000,
+          keyword: q.keyword
+        },
+        (results, status) => handleResults(results, status, q.keyword, "yellow")
+      );
+    });
+
+    // Green pointers for EV chargers
+    evQueries.forEach(q => {
+      service.nearbySearch(
+        {
+          location: defaultLocation,
+          radius: 7000,
+          keyword: q.keyword
+        },
+        (results, status) => handleResults(results, status, q.keyword, "green")
+      );
+    });
+
+    function handleResults(results, status, keyword, color) {
+      console.log(`Status for "${keyword}":`, status, results?.length || 0);
+
+      if (status === google.maps.places.PlacesServiceStatus.OK && results.length) {
+        results.forEach(place => {
+          if (!place.geometry || !place.geometry.location) return;
+
+          const marker = new google.maps.Marker({
+            map,
+            position: place.geometry.location,
+            title: place.name,
+            icon: {
+              url:
+                color === "green"
+                  ? "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                  : "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
+            }
+          });
+
+          const infowindow = new google.maps.InfoWindow({
+            content: `
+              <div style="color:black; font-family:Poppins;">
+                <h3>${place.name}</h3>
+                <p><strong>Address:</strong> ${place.vicinity || "N/A"}</p>
+                <p><strong>Keyword match:</strong> ${keyword}</p>
+                <p><strong>Rating:</strong> ${place.rating || "Not rated"}</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}"
+                   target="_blank" style="color:#ffea00;">View on Google Maps</a>
+              </div>
+            `
+          });
+
+          marker.addListener("click", () => infowindow.open(map, marker));
+        });
+      } else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+        console.warn(`No results found for "${keyword}"`);
+      } else {
+        console.error(`Places API error for "${keyword}":`, status);
+      }
+    }
+  }
+</script>
+
+<!-- Google Maps + Places API -->
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDN45vJ_siaKyr9f-zElo-2YmsHzGHzXRM&libraries=places&callback=initMap">
+</script>
+
+
+</body>
+</html>

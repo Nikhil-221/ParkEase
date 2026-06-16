@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ParkEase - Lender Requests</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 50px;
+      background-color: #000;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .logo a span {
+      color: #ffea00;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      font-size: 15px;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-right a.active {
+      color: #ffea00;
+    }
+
+    .profile {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile i {
+      font-size: 1.5rem;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background-color: #ffffff;
+      color: #000000;
+      border-radius: 5px;
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 200px;
+      font-weight: 600;
+      z-index: 100;
+    }
+
+    .dropdown a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .dropdown a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      flex: 1;
+      padding: 40px 60px;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .request-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .request-card {
+      background-color: white;
+      color: black;
+      padding: 30px 25px;
+      border-radius: 20px;
+      width: 250px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .request-card p {
+      margin: 10px 0;
+      font-weight: 600;
+    }
+
+    .learn-more {
+      background-color: #ffea00;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-top: auto;
+      cursor: pointer;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 50px;
+      font-size: 15px;
+      background-color: #000;
+      font-weight: bold;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+    }
+
+    footer a span {
+      color: #ffea00;
+    }
+
+    footer div:last-child {
+      display: flex;
+      gap: 30px;
+    }
+
+    /* Popup */
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .popup {
+      background: white;
+      color: black;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    }
+
+    .popup img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .popup h3 {
+      margin-bottom: 10px;
+    }
+
+    .popup p {
+      margin: 5px 0;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <a href="{{ url_for('lenderdashboard') }}">Lender <span>Dashboard</span></a>
+    </div>
+    <div class="nav-right">
+      <a href="{{ url_for('bookings') }}" class="active">Bookings</a>
+      <a href="{{ url_for('reviews') }}">Reviews</a>
+      <a href="{{ url_for('lendercontact') }}">Contact</a>
+      <div class="profile" onclick="toggleDropdown()">
+        <i class="fas fa-user-circle"></i>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="{{ url_for('lenderaccount') }}">Your Account</a>
+          <a href="{{ url_for('logout') }}">Log out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h2>Bookings</h2>
+    <div class="request-container">
+      {% for booking in bookings %}
+        <div class="request-card"
+          data-location="{{ booking.spot.location }}"
+          data-description="{{ booking.spot.description }}"
+          data-price="{{ booking.spot.price }}"
+          data-slot-from="{{ booking.spot.slot_from }}"
+          data-slot-till="{{ booking.spot.slot_till }}"
+          data-image="{{ booking.spot.image_url }}"
+          data-user="{{ booking.user.fullname }}"
+          data-phone="{{ booking.user.phone }}">
+          
+          <p><strong>Location:</strong> {{ booking.spot.location }}</p>
+          <p><strong>Vehicle:</strong> {{ booking.spot.description }}</p>
+          <p><strong>Cost:</strong> ₹{{ "%.0f"|format(booking.spot.price) }}</p>
+          <p><strong>Slot:</strong> {{ booking.spot.slot_from }} - {{ booking.spot.slot_till }}</p>
+          <p><strong>User:</strong> {{ booking.user.fullname }}</p>
+          <p><strong>Phone:</strong> {{ booking.user.phone }}</p>
+          <button class="learn-more" onclick="openPopup(this)">Learn More</button>
+        </div>
+      {% else %}
+        <p>No booking requests yet.</p>
+      {% endfor %}
+    </div>
+  </main>
+
+  <!-- Popup -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <button class="close-btn" onclick="closePopup()">×</button>
+      <img id="popupImage" src="" alt="Spot Image">
+      <h3 id="popupLocation"></h3>
+      <p><strong>Vehicle:</strong> <span id="popupVehicle"></span></p>
+      <p><strong>Cost:</strong> ₹<span id="popupCost"></span></p>
+      <p><strong>Slot:</strong> <span id="popupSlot"></span></p>
+      <p><strong>User:</strong> <span id="popupUser"></span></p>
+      <p><strong>Phone:</strong> <span id="popupPhone"></span></p>
+    </div>
+  </div>
+
+  <footer>
+    <div>© <a href="#">Park<span>Ease.</span></a></div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdownMenu");
+      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    }
+
+    document.addEventListener("click", function (event) {
+      const profile = document.querySelector(".profile");
+      const dropdown = document.getElementById("dropdownMenu");
+      if (!profile.contains(event.target)) {
+        dropdown.style.display = "none";
+      }
+    });
+
+    function openPopup(button) {
+      const card = button.closest(".request-card");
+      document.getElementById("popupLocation").textContent = card.dataset.location;
+      document.getElementById("popupVehicle").textContent = card.dataset.description;
+      document.getElementById("popupCost").textContent = card.dataset.price;
+      document.getElementById("popupSlot").textContent = card.dataset.slotFrom + " - " + card.dataset.slotTill;
+      document.getElementById("popupUser").textContent = card.dataset.user;
+      document.getElementById("popupPhone").textContent = card.dataset.phone;
+      document.getElementById("popupImage").src = card.dataset.image;
+      document.getElementById("popupOverlay").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popupOverlay").style.display = "none";
+    }
+  </script>
+</body>
+</html>

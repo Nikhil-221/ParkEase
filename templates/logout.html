@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logout - ParkEase</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #000;
+      padding: 30px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 50px;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-right a.active {
+      color: #ffea00;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .logout-box {
+      background-color: #000000;
+      padding: 40px;
+      border-radius: 10px;
+    }
+
+    .logout-box h2 {
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .logout-box button {
+      padding: 10px 30px;
+      margin: 10px;
+      font-size: 1rem;
+      border-radius: 25px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .yes {
+      background-color: #ffea00;
+      color: black;
+    }
+
+    .no {
+      background-color: black;
+      border: 1px solid white;
+      color: white;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 50px;
+      font-size: 15px;
+      background-color: #000;
+      flex-wrap: wrap;
+      font-weight: bold;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+    }
+
+    footer a span {
+      color: #ffea00;
+    }
+
+    footer div:last-child {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span>Confirm <span style="color: #ffea00;">Logout</span></span>
+    </div>
+    <div class="nav-right">
+      <a href="home.html">Home</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="logout-box">
+      <h2>Are you sure you want to log out?</h2>
+      <button class="yes" onclick="confirmLogout()">Yes, Log out</button>
+      <button class="no" onclick="cancelLogout()">Cancel</button>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      © <a href="#">Park<span class="highlight">Ease.</span></a>
+    </div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script>
+    function confirmLogout() {
+      window.location.href = "login.html"; 
+    }
+
+    function cancelLogout() {
+      window.history.back(); 
+    }
+  </script>
+</body>
+</html>

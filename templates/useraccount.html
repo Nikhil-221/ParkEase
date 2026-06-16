@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Account - ParkEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 50px;
+      background-color: #000;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .logo span {
+      color: #ffea00;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      font-size: 15px;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-right a.active {
+      color: #ffea00;
+    }
+
+    .profile {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile i {
+      font-size: 1.5rem;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background-color: #ffffff;
+      color: #000000;
+      border-radius: 5px;
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 200px;
+      font-weight: 600;
+      z-index: 100;
+    }
+
+    .dropdown a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .dropdown a:hover {
+      text-decoration: underline;
+    }
+    main {
+      flex: 1;
+      padding: 50px;
+    }
+
+    .account-box {
+      background-color: #000000;
+      padding: 40px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .account-box h2 {
+      color: #ffea00;
+      margin-bottom: 20px;
+    }
+
+    .account-box p {
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 50px;
+      font-size: 15px;
+      background-color: #000000;
+      font-weight: bold;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+    }
+
+    footer a span {
+      color: #ffea00;
+    }
+
+    footer div:last-child {
+      display: flex;
+      gap: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+  <div class="logo">
+<a href="{{ url_for('userdashboard') }}" style="text-decoration: none; color: white;">
+      User <span>Dashboard</span>
+    </a>
+  </div>
+  <div class="nav-right">
+    <a href="{{ url_for('pbs') }}">Previously booked spots</a>
+<a href="{{ url_for('usercontact') }}">Contact</a>
+
+    <div class="profile" onclick="toggleDropdown()">
+      <i class="fas fa-user-circle"></i>
+      <div class="dropdown" id="dropdownMenu">
+        <a href="{{ url_for('useraccount') }}">Your Account</a>
+<a href="{{ url_for('logout') }}">Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+  <main>
+  <div class="account-box">
+    <h2>Account Details</h2>
+    <p><strong>Name:</strong> {{ user.fullname }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Phone:</strong> {{ user.phone }}</p>
+    <p><strong>Account Created:</strong> {{ user.created_at.strftime("%B %d, %Y") }}</p>
+  </div>
+</main>
+
+  <footer>
+    <div>
+      © <a href="#">Park<span class="highlight">Ease.</span></a>
+    </div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdownMenu");
+      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    }
+
+    document.addEventListener("click", function (e) {
+      const profile = document.querySelector(".profile");
+      const dropdown = document.getElementById("dropdownMenu");
+      if (!profile.contains(e.target)) {
+        dropdown.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

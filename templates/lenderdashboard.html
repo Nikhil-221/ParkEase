@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lender Dashboard - ParkEase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 50px;
+      background-color: #000;
+    }
+
+    .logo { font-size: 1.2rem; font-weight: 700; }
+    .logo span { color: #ffea00; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      font-size: 15px;
+    }
+
+    .nav-right a { color: white; text-decoration: none; font-weight: bold; }
+
+    .profile { position: relative; cursor: pointer; }
+    .profile i { font-size: 1.5rem; }
+
+    .dropdown {
+      position: absolute; top: 40px; right: 0;
+      background-color: #fff; color: #000;
+      border-radius: 5px; padding: 10px;
+      display: none; flex-direction: column;
+      gap: 10px; min-width: 200px;
+      font-weight: 600; z-index: 100;
+    }
+
+    .dropdown a { text-decoration: none; color: black; }
+
+    .container { flex: 1; padding: 30px 60px; }
+
+    .add-spot { margin-bottom: 30px; }
+    .add-box {
+      width: 100px; height: 100px; background: white; color: black;
+      font-size: 48px; display: flex; justify-content: center; align-items: center;
+      border-radius: 15px; cursor: pointer; margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .add-box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 234, 0, 0.4);
+    }
+
+    h2 { margin-bottom: 20px; }
+
+    .spots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    /* ---------- CARD STYLING ---------- */
+    .card {
+      background-color: #0a0a0a;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 12px rgba(255, 234, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 234, 0, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(255, 234, 0, 0.4);
+      border: 1px solid rgba(255, 234, 0, 0.5);
+    }
+
+    .card h3 {
+      color: #ffea00;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      margin: 5px 0;
+      color: #ddd;
+    }
+
+    .card button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #ffea00;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .card button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 234, 0, 0.4);
+    }
+
+    /* ---------- POPUP ---------- */
+    .popup-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      display: none; justify-content: center; align-items: center;
+      z-index: 999;
+    }
+
+    .popup {
+      background-color: #fff; color: #000;
+      border-radius: 10px; padding: 25px;
+      width: 90%; max-width: 500px;
+      position: relative;
+    }
+
+    .popup img {
+      width: 100%; height: 180px; object-fit: cover;
+      border-radius: 8px; margin-bottom: 15px;
+    }
+
+    .popup h3 { margin-bottom: 10px; color: #333; }
+    .popup p { margin-bottom: 10px; }
+
+    .popup .close-btn {
+      position: absolute; top: 10px; right: 15px;
+      background: none; border: none; font-size: 20px; cursor: pointer;
+    }
+
+    .popup .relist-btn {
+      background-color: #ffea00;
+      border: none; padding: 10px 20px;
+      border-radius: 25px; font-weight: bold;
+      cursor: pointer; margin-top: 15px;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .popup .relist-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 234, 0, 0.4);
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 50px;
+      font-size: 15px;
+      background-color: #000;
+      font-weight: bold;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+    }
+
+    footer a span { color: #ffea00; }
+
+    footer div:last-child {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      header, footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .container { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Lender <span>Dashboard</span></div>
+  <div class="nav-right">
+    <a href="{{ url_for('bookings') }}">Bookings</a>
+    <a href="{{ url_for('reviews') }}">Reviews</a>
+    <a href="{{ url_for('lendercontact') }}">Contact</a>
+    <div class="profile" onclick="toggleDropdown()">
+      <i class="fas fa-user-circle"></i>
+      <div class="dropdown" id="dropdownMenu">
+        <a href="{{ url_for('lenderaccount') }}">Your Account</a>
+        <a href="{{ url_for('logout') }}">Log out</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="add-spot">
+    <h2>Add your Spots here</h2>
+    <a href="{{ url_for('addspots') }}">
+      <div class="add-box">+</div>
+    </a>
+  </div>
+
+  <h2>Already Listed Spots of yours</h2>
+  <div class="spots" id="spotsContainer">
+    {% for spot in spots %}
+      <div class="card">
+        <h3>{{ spot.location }}</h3>
+        <p><strong>Price:</strong> ₹{{ spot.price }}</p>
+        <button 
+          onclick="openPopup(
+            '{{ spot.location }}',
+            '{{ spot.description }}',
+            '{{ spot.image_url }}',
+            '{{ spot.price }}',
+            '{{ spot.contact }}',
+            '{{ spot.slot_from.strftime("%I:%M %p") }}',
+            '{{ spot.slot_till.strftime("%I:%M %p") }}'
+          )">
+          Learn More
+        </button>
+      </div>
+    {% else %}
+      <p>No spots listed yet. Click the + button to add one!</p>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup">
+    <button class="close-btn" onclick="closePopup()">×</button>
+    <img id="popupImage" src="https://via.placeholder.com/500x180.png?text=Parking+Spot+Image" alt="Spot Image">
+    <h3 id="popupLocation"></h3>
+    <p><strong>Vehicle Type:</strong> <span id="popupDescription"></span></p>
+    <p><strong>Slot:</strong> <span id="popupSlot"></span></p>
+    <p><strong>Contact:</strong> <span id="popupContact"></span></p>
+    <p><strong>Price:</strong> ₹<span id="popupPrice"></span></p>
+    <button class="relist-btn" id="relistBtn">Re-list</button>
+  </div>
+</div>
+
+<footer>
+  <div>© Park<span class="highlight" style="color: #ffea00;">Ease.</span></div>
+  <div>
+    <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+    <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+  </div>
+</footer>
+
+<script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownMenu");
+    dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+  }
+
+  document.addEventListener("click", function (event) {
+    const profile = document.querySelector(".profile");
+    const dropdown = document.getElementById("dropdownMenu");
+    if (!profile.contains(event.target)) dropdown.style.display = "none";
+  });
+
+  function openPopup(location, description, imageUrl, price, contact, slotFrom, slotTill) {
+    document.getElementById("popupLocation").textContent = location;
+    document.getElementById("popupDescription").textContent = description;
+    document.getElementById("popupSlot").textContent = `${slotFrom} to ${slotTill}`;
+    document.getElementById("popupContact").textContent = contact;
+    document.getElementById("popupPrice").textContent = price;
+    document.getElementById("popupImage").src = imageUrl || "https://via.placeholder.com/500x180.png?text=Parking+Spot+Image";
+    document.getElementById("popupOverlay").style.display = "flex";
+
+    document.getElementById("relistBtn").onclick = () => {
+      alert("Re-list functionality coming soon!");
+    };
+  }
+
+  function closePopup() {
+    document.getElementById("popupOverlay").style.display = "none";
+  }
+</script>
+</body>
+</html>

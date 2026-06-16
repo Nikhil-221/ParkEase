@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book a Spot - ParkEase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #000;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 50px;
+      background-color: #000;
+    }
+
+    .logo { font-size: 1.2rem; font-weight: 700; }
+    .logo a { text-decoration: none; color: white; font-size: inherit; font-weight: inherit; }
+    .logo a span { color: #ffea00; }
+
+    .nav-right { display: flex; align-items: center; gap: 50px; font-size: 15px; }
+    .nav-right a { color: white; text-decoration: none; font-weight: bold; }
+
+    .profile { position: relative; cursor: pointer; }
+    .profile i { font-size: 1.5rem; }
+    .dropdown {
+      position: absolute; top: 40px; right: 0; background-color: #fff; color: #000;
+      border-radius: 5px; padding: 10px; display: none; flex-direction: column;
+      gap: 10px; min-width: 200px; font-weight: 600; z-index: 100;
+    }
+    .dropdown a { text-decoration: none; color: black; }
+    .dropdown a:hover { text-decoration: underline; }
+
+    /* ---------- CARDS SECTION ---------- */
+    .cards-section { flex: 1; padding: 30px 60px; position: relative; }
+    .grid-container {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;
+    }
+
+    /* ---------- CARD STYLING ---------- */
+    .card {
+      background-color: #0a0a0a;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 12px rgba(255, 234, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 234, 0, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(255, 234, 0, 0.4);
+      border: 1px solid rgba(255, 234, 0, 0.5);
+    }
+
+    .card h3 { color: #ffea00; font-size: 1.1rem; margin-bottom: 10px; }
+    .card p { font-size: 0.9rem; margin: 5px 0; color: #ddd; }
+
+    .card button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #ffea00;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .card button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 234, 0, 0.4);
+    }
+
+    /* ---------- POPUP ---------- */
+    .popup-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      display: none; justify-content: center; align-items: center;
+      z-index: 999;
+    }
+    .popup {
+      background-color: #fff; color: #000; border-radius: 10px;
+      padding: 25px; width: 90%; max-width: 500px; position: relative;
+    }
+    .popup img {
+      width: 100%; height: 180px; object-fit: cover;
+      border-radius: 8px; margin-bottom: 15px;
+    }
+    .popup h3 { margin-bottom: 10px; color: #333; }
+    .popup p { margin-bottom: 10px; }
+    .popup .close-btn {
+      position: absolute; top: 10px; right: 15px;
+      background: none; border: none; font-size: 20px; cursor: pointer;
+    }
+    .popup input[type="number"] {
+      width: 100%; padding: 8px; margin-top: 10px;
+      border-radius: 6px; border: 1px solid #ccc;
+    }
+    .popup .book-now {
+      background-color: #ffea00;
+      border: none; padding: 10px 20px;
+      border-radius: 25px; font-weight: bold;
+      cursor: pointer; margin-top: 15px;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+    .popup .book-now:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 234, 0, 0.4);
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      margin-top: auto; display: flex; justify-content: space-between;
+      padding: 30px 50px; font-size: 15px; background-color: #000;
+      font-weight: bold; flex-wrap: wrap;
+    }
+    footer a { color: white; text-decoration: none; margin: 0 20px; }
+    footer a span { color: #ffea00; }
+    footer div:last-child { display: flex; gap: 30px; flex-wrap: wrap; }
+
+    @media (max-width: 768px) {
+      header, footer { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .cards-section { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <a href="{{ url_for('userdashboard') }}">User <span>Dashboard</span></a>
+    </div>
+    <div class="nav-right">
+      <a href="{{ url_for('pbs') }}">Previously booked spots</a>
+      <a href="{{ url_for('usercontact') }}">Contact</a>
+      <div class="profile" onclick="toggleDropdown()">
+        <i class="fas fa-user-circle"></i>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="{{ url_for('useraccount') }}">Your Account</a>
+          <a href="{{ url_for('logout') }}">Log out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN SECTION -->
+  <section class="cards-section">
+    <div style="margin-bottom: 20px;">
+      <input type="text" id="searchInput" placeholder="Search by location, vehicle type, or price..." 
+             style="padding:10px; width:100%; border-radius:8px; border:none;"/>
+    </div>
+
+    <div class="grid-container" id="cardContainer">
+      {% for spot in spots %}
+        {% if not spot.booked %}
+        <div class="card" 
+          data-id="{{ spot.id }}"
+          data-location="{{ spot.location | lower }}" 
+          data-vehicle="{{ spot.description | lower }}" 
+          data-price="{{ spot.price }}"
+          data-lender="{{ spot.lender.fullname }}"
+          data-lender-phone="{{ spot.lender.phone }}"
+          data-image="{{ spot.image_url }}">
+    
+          <h3>{{ spot.location }}</h3>
+          <p><strong>Vehicle:</strong> {{ spot.description }}</p>
+          <p><strong>Cost:</strong> ₹{{ "%.0f"|format(spot.price) }}/hr</p>
+          <button onclick="openPopup(this)">Learn More</button>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- POPUP -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <button class="close-btn" onclick="closePopup()">×</button>
+      <img id="popupImage" src="" alt="Spot Image">
+      <h3 id="popupLocation"></h3>
+      <p><strong>Vehicle:</strong> <span id="popupVehicle"></span></p>
+      <p><strong>Cost:</strong> <span id="popupCost"></span></p>
+      <p><strong>Lender:</strong> <span id="popupLender"></span></p>
+      <p><strong>Contact:</strong> <span id="popupContact"></span></p>
+
+      <label for="hours"><strong>Duration (hours):</strong></label>
+      <input type="number" id="hoursInput" min="1" value="1"/>
+
+      <button class="book-now" onclick="bookNow()">Book Now</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>© Park<span class="highlight" style="color: #ffea00;">Ease.</span></div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdownMenu");
+      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    }
+
+    document.addEventListener("click", function (event) {
+      const profile = document.querySelector(".profile");
+      const dropdown = document.getElementById("dropdownMenu");
+      if (!profile.contains(event.target)) dropdown.style.display = "none";
+    });
+
+    document.getElementById("searchInput").addEventListener("input", function() {
+      const query = this.value.toLowerCase();
+      const cards = document.querySelectorAll(".card");
+      cards.forEach(card => {
+        const matches = card.dataset.location.includes(query) ||
+                        card.dataset.vehicle.includes(query) ||
+                        card.dataset.price.includes(query);
+        card.style.display = matches ? "block" : "none";
+      });
+    });
+
+    let selectedSpotId = null;
+
+    function openPopup(button) {
+      const card = button.parentElement;
+      selectedSpotId = card.dataset.id;
+
+      document.getElementById("popupLocation").textContent = card.querySelector("h3").textContent;
+      document.getElementById("popupVehicle").textContent = card.dataset.vehicle;
+      document.getElementById("popupCost").textContent = "₹" + card.dataset.price + "/hr";
+      document.getElementById("popupLender").textContent = card.dataset.lender;
+      document.getElementById("popupContact").textContent = card.dataset.lenderPhone;
+      document.getElementById("popupImage").src = card.dataset.image;
+
+      document.getElementById("popupOverlay").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popupOverlay").style.display = "none";
+    }
+
+    function bookNow() {
+      const hours = document.getElementById("hoursInput").value;
+      if (!hours || hours < 1) {
+        alert("Please enter a valid number of hours.");
+        return;
+      }
+      window.location.href = `/payment/${selectedSpotId}?hours=${hours}`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ParkEase</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    header {
+      background-color: #000;
+      padding: 30px 50px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 15px;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 50px; 
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0px 20px;
+    }
+
+    .nav-right a.active {
+      color: #ffea00;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 80vh;
+      padding: 0 10px;
+    }
+
+    h2 {
+      font-size: 30px;
+      margin-top: -15%;
+      margin-left: 90px;
+      font-weight: bolder;
+    }
+
+    h1 {
+      font-size: 100px;
+      margin-top: 10px;
+      margin-left: 90px;
+    }
+
+    .highlight {
+      color: #ffea00;
+    }
+
+    .btn {
+      background-color: #ffea00;
+      border-radius: 25px;
+      padding: 15px 25px;
+      font-size: 25px;
+      font-weight: bolder;
+      cursor: pointer;
+      margin-top: 70px;
+      position: absolute;
+      top: 55%;
+      left: 45%;
+      text-decoration: none;
+      color: black;
+
+    }
+
+    .btn:hover {
+      background-color: #eadc0c;
+      transform: scale(1.05);
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 50px;
+      font-size: 15px;
+      background-color: #000;
+      flex-wrap: wrap;
+      font-weight: bold;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+    }
+
+    footer a span {
+      color: #ffea00;
+    }
+
+    footer div:last-child {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-right">
+        <a href="{{ url_for('home') }}" class="active">Home</a>
+        <a href="{{ url_for('aboutus') }}">About us</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('login') }}" class="login">Log In</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div>
+      <h2>What if parking wasn’t a gamble?</h2>
+      <h1>Park<span class="highlight">Ease.</span></h1>
+      <a href="{{ url_for('signupas') }}" class="btn">Get Started</a>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      © <a href="{{ url_for('home') }}">Park<span class="highlight">Ease.</span></a>
+    </div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+</body>
+</html>

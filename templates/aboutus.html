@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - ParkEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* ---------- HEADER + NAV ---------- */
+    header {
+      background-color: #000;
+      padding: 30px 50px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 15px;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 50px;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0 20px;
+      transition: none;
+    }
+
+    /* Only the active one is yellow */
+    .nav-right a.active {
+      color: #ffea00;
+    }
+
+    /* Hover color should stay white */
+    .nav-right a:hover {
+      color: white;
+    }
+
+    /* ---------- MAIN CONTENT ---------- */
+    h1 {
+      text-align: center;
+      font-size: 44px;
+      margin: 60px 0 40px;
+      color: white;
+    }
+
+    h1 .highlight {
+      color: #ffea00;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 35px;
+      padding: 40px 60px;
+      max-width: 1300px;
+      margin: auto;
+    }
+
+    .about-box {
+      background: #111;
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      color: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(255, 234, 0, 0.05);
+    }
+
+    .about-box:hover {
+      transform: translateY(-10px);
+      background: #0a0a0a;
+      box-shadow: 0 0 25px rgba(255, 234, 0, 0.25);
+    }
+
+    .about-box i {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #ffea00;
+    }
+
+    .about-box h2 {
+      margin: 15px 0;
+      font-size: 22px;
+      color: #ffea00;
+    }
+
+    .about-box p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e0e0e0;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 50px;
+      font-size: 15px;
+      background-color: #000;
+      flex-wrap: wrap;
+      font-weight: bold;
+      margin-top: 60px;
+      border-top: none; /* No separator line */
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      transition: none;
+    }
+
+    footer a:hover {
+      color: white; /* No hover change */
+    }
+
+    footer a span {
+      color: #ffea00;
+    }
+
+    footer div:last-child {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+      header {
+        padding: 20px;
+      }
+
+      .nav-right {
+        gap: 30px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .grid {
+        padding: 20px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header>
+    <nav class="navbar">
+      <div class="nav-right">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('aboutus') }}" class="active">About us</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('login') }}" class="login">Log In</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <h1>About Park<span class="highlight">Ease.</span></h1>
+
+    <div class="grid">
+      <div class="about-box">
+        <i class="fas fa-car"></i>
+        <h2>Features</h2>
+        <p>Park<span style="color: #ffea00;">Ease.</span> provides a smart platform to book parking spots and vehicles easily, saving time and effort.</p>
+      </div>
+
+      <div class="about-box">
+        <i class="fas fa-bolt"></i>
+        <h2>Efficiency</h2>
+        <p>Reduce stress and traffic congestion with real-time availability of parking spaces and vehicles.</p>
+      </div>
+
+      <div class="about-box">
+        <i class="fas fa-coins"></i>
+        <h2>Monetization</h2>
+        <p>Owners can earn revenue by renting out unused parking spaces or vehicles through our platform.</p>
+      </div>
+
+      <div class="about-box">
+        <i class="fas fa-shield-alt"></i>
+        <h2>Security</h2>
+        <p>Park<span style="color: #ffea00;">Ease.</span> ensures secure transactions and trustworthy interactions between users and space owners.</p>
+      </div>
+
+      <div class="about-box">
+        <i class="fas fa-globe"></i>
+        <h2>Accessibility</h2>
+        <p>Our platform is accessible 24/7, providing users the convenience to find parking anytime, anywhere.</p>
+      </div>
+
+      <div class="about-box">
+        <i class="fas fa-cogs"></i>
+        <h2>Flexibility</h2>
+        <p>Users can choose slots based on duration, price, and location, making parking fully flexible.</p>
+      </div>
+
+      <div class="about-box">
+        <i class="fas fa-leaf"></i>
+        <h2>Sustainability</h2>
+        <p>Optimizing parking usage reduces emissions and promotes a greener, more sustainable urban environment.</p>
+      </div>
+
+      <div class="about-box">
+        <i class="fas fa-users"></i>
+        <h2>Community</h2>
+        <p>Park<span style="color: #ffea00;">Ease.</span> connects drivers and space owners, fostering a reliable and collaborative parking community.</p>
+      </div>
+
+      <div class="about-box">
+        <i class="fas fa-lightbulb"></i>
+        <h2>Innovation</h2>
+        <p>We use smart technology to solve parking problems efficiently, improving user experience every step.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      © <a href="{{ url_for('home') }}">Park<span class="highlight">Ease.</span></a>
+    </div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+</body>
+</html>

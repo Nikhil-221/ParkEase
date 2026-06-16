@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ParkEase - User Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 50px;
+      background-color: #000;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .logo span {
+      color: #ffea00;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      font-size: 15px;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-right a.active {
+      color: #ffea00;
+    }
+
+    .profile {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile i {
+      font-size: 1.5rem;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background-color: #ffffff;
+      color: #000000;
+      border-radius: 5px;
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 200px;
+      font-weight: 600;
+      z-index: 100;
+    }
+
+    .dropdown a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .dropdown a:hover {
+      text-decoration: underline;
+    }
+
+    main.dashboard-content {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    main h2 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .space-options {
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      flex-wrap: wrap;
+      margin-top: 50px;
+    }
+
+    .space-option {
+      background-color: #ffea00;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      color: black;
+      font-weight: 700;
+      width: 200px;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .space-option:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(255, 234, 0, 0.5);
+    }
+
+    .space-option img {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+
+    footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 50px;
+      font-size: 15px;
+      background-color: #000;
+      font-weight: bold;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+    }
+
+    footer a span {
+      color: #ffea00;
+    }
+
+    footer div:last-child {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  
+  <header>
+    <div class="logo">
+      User <span>Dashboard</span>
+    </div>
+    <div class="nav-right">
+      <a href="{{ url_for('pbs') }}">Previously Booked Spots</a>
+<a href="{{ url_for('usercontact') }}">Contact</a>
+
+      <div class="profile" onclick="toggleDropdown()">
+        <i class="fas fa-user-circle"></i>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="{{ url_for('useraccount') }}">Your Account</a>
+<a href="{{ url_for('logout') }}">Log out</a>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <main class="dashboard-content">
+    <h2>What kind of space are you looking for?</h2>
+    <div class="space-options">
+      <a href="{{ url_for('private') }}" class="space-option">
+        <img src="https://img.icons8.com/ios-filled/100/lock.png" alt="Private Space" />
+        <div>Private spaces</div>
+      </a>
+      <a href="{{ url_for('public') }}" class="space-option">
+        <img src="https://img.icons8.com/ios-filled/100/building.png" alt="Public Space" />
+        <div>Public Spaces</div>
+      </a>
+    </div>
+  </main>
+
+  
+  <footer>
+    <div>
+      © <a href="#">Park<span class="highlight">Ease.</span></a>
+    </div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdownMenu");
+      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    }
+
+    
+    document.addEventListener("click", function (event) {
+      const profile = document.querySelector(".profile");
+      const dropdown = document.getElementById("dropdownMenu");
+      if (!profile.contains(event.target)) {
+        dropdown.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

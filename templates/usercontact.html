@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ParkEase - Contact</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { 
+      margin: 0; 
+      background-color: black; 
+      color: white; 
+      font-family: 'Poppins', sans-serif; 
+    }
+
+    /* HEADER */
+    header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 30px 50px; 
+      background-color: #000; 
+    }
+
+    .logo { font-size: 1.2rem; font-weight: 700; }
+    .logo a { text-decoration: none; color: white; font-size: inherit; font-weight: inherit; }
+    .logo a span { color: #ffea00; }
+
+    .nav-right { display: flex; align-items: center; gap: 50px; font-size: 15px; }
+    .nav-right a { color: white; text-decoration: none; font-weight: bold; }
+
+    .profile { position: relative; cursor: pointer; }
+    .profile i { font-size: 1.5rem; }
+
+    .dropdown { 
+      position: absolute; 
+      top: 40px; 
+      right: 0; 
+      background-color: #fff; 
+      color: #000; 
+      border-radius: 5px; 
+      padding: 10px; 
+      display: none; 
+      flex-direction: column; 
+      gap: 10px; 
+      min-width: 200px; 
+      font-weight: 600; 
+      z-index: 100; 
+    }
+
+    .dropdown a { text-decoration: none; color: black; }
+
+    /* CONTACT SECTION */
+    .contact-section { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 0 80px; 
+      height: 80vh; 
+    }
+
+    .contact-left { flex: 1; }
+
+    .contact-left h2 { 
+      font-size: 2rem; 
+      margin-bottom: 20px; 
+      font-weight: 700; 
+      color: #ffea00; 
+    }
+
+    .contact-left p { 
+      font-size: 1.2rem; 
+      font-weight: 600; 
+      line-height: 2; 
+    }
+
+    /* GLOWING SOCIAL ICONS */
+    .social-icons { 
+      margin-top: 30px; 
+      display: flex; 
+      gap: 20px; 
+    }
+
+    .social-icons i { 
+      color: #ffea00; 
+      font-size: 1.7rem; 
+      cursor: pointer; 
+      transition: transform 0.3s ease, text-shadow 0.3s ease; 
+      text-shadow: 0 0 8px rgba(255, 234, 0, 0.5); 
+    }
+
+    .social-icons i:hover { 
+      transform: scale(1.2); 
+      text-shadow: 0 0 20px rgba(255, 234, 0, 0.9); 
+      color: #fff; 
+    }
+
+    /* FORM */
+    .contact-right { 
+      flex: 1; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+    }
+
+    .form-box { 
+      background: #ffea00; 
+      padding: 30px; 
+      border-radius: 20px; 
+      width: 350px; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 20px; 
+    }
+
+    .form-box textarea { 
+      width: 100%; 
+      height: 150px; 
+      padding: 15px; 
+      font-size: 1rem; 
+      border-radius: 15px; 
+      border: none; 
+      resize: none; 
+      outline: none; 
+      font-family: 'Poppins', sans-serif; 
+      background-color: black; 
+      color: white; 
+    }
+
+    .form-box button { 
+      margin-top: 10px; 
+      background-color: black; 
+      color: #ffea00; 
+      font-weight: bold; 
+      padding: 10px 30px; 
+      font-size: 1rem; 
+      border: none; 
+      border-radius: 50px; 
+      cursor: pointer; 
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-box button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 234, 0, 0.5);
+    }
+
+    .success-message { 
+      color: green; 
+      font-weight: bold; 
+      margin-top: 10px; 
+      text-align: center; 
+    }
+
+    /* FOOTER */
+    footer { 
+      display: flex; 
+      justify-content: space-between; 
+      padding: 30px 50px; 
+      font-size: 15px; 
+      background-color: #000; 
+      flex-wrap: wrap; 
+      font-weight: bold; 
+    }
+
+    footer a { 
+      color: white; 
+      text-decoration: none; 
+      margin: 0 20px; 
+    }
+
+    footer a span { color: #ffea00; }
+
+    footer div:last-child { 
+      display: flex; 
+      gap: 30px; 
+      flex-wrap: wrap; 
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo"><a href="{{ url_for('userdashboard') }}">User <span>Dashboard</span></a></div>
+    <div class="nav-right">
+      <a href="{{ url_for('pbs') }}">Previously Booked Spots</a>
+      <a href="{{ url_for('usercontact') }}">Contact</a>
+      <div class="profile" onclick="toggleDropdown()">
+        <i class="fas fa-user-circle"></i>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="{{ url_for('useraccount') }}">Your Account</a>
+          <a href="{{ url_for('logout') }}">Log out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="contact-section">
+    <div class="contact-left">
+      <h2>Facing an issue?</h2>
+      <p>Register your complains here.<br>or<br>Contact Us!</p>
+      <div class="social-icons">
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-youtube"></i>
+      </div>
+    </div>
+
+    <div class="contact-right">
+      <form class="form-box" method="POST">
+        <textarea name="message" placeholder="Type your complains here..." required></textarea>
+        <button type="submit">Submit</button>
+        {% if success %}
+          <div class="success-message">✅ Your message has been sent successfully!</div>
+        {% endif %}
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div>© <a href="#">Park<span class="highlight">Ease.</span></a></div>
+    <div>
+      <a href="{{ url_for('terms') }}">Terms and Conditions</a>
+      <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdownMenu");
+      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    }
+    document.addEventListener("click", function (event) {
+      const profile = document.querySelector(".profile");
+      const dropdown = document.getElementById("dropdownMenu");
+      if (!profile.contains(event.target)) dropdown.style.display = "none";
+    });
+  </script>
+</body>
+</html>
